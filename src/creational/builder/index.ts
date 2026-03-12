@@ -1,56 +1,133 @@
-// Product
-class House {
-  walls: string = "";
-  roof: string = "";
-  door: string = "";
+/**
+ * BUILDER — Creational Pattern
+ *
+ * Problem: Constructing complex objects step-by-step, separating
+ * construction logic from the representation. Avoids telescoping
+ * constructors with many optional parameters.
+ *
+ * Anti-example:
+ *   new Pizza("large", "thin", true, false, true, true, false)
+ *   — unreadable, error-prone, hard to maintain.
+ */
 
-  describe(): void {
-    console.log(`House with ${this.walls}, ${this.roof}, and ${this.door}`);
+// ── Product ────────────────────────────────────────────────────────────────
+class Pizza {
+  public size!: string;
+  public crust!: string;
+  public sauce!: string;
+  public toppings: string[] = [];
+  public extraCheese: boolean = false;
+  public deliveryNotes?: string;
+
+  toString(): string {
+    return [
+      `  🍕 Pizza [${this.size}]`,
+      `     Crust : ${this.crust}`,
+      `     Sauce : ${this.sauce}`,
+      `     Tops  : ${this.toppings.join(", ") || "none"}`,
+      `     Extra cheese: ${this.extraCheese ? "yes" : "no"}`,
+      this.deliveryNotes ? `     Notes : ${this.deliveryNotes}` : "",
+    ].filter(Boolean).join("\n");
   }
 }
 
-// Builder interface
-interface HouseBuilder {
-  buildWalls(): void;
-  buildRoof(): void;
-  buildDoor(): void;
-  getResult(): House;
+// ── Builder interface ──────────────────────────────────────────────────────
+interface PizzaBuilder {
+  setSize(size: string): this;
+  setCrust(crust: string): this;
+  setSauce(sauce: string): this;
+  addTopping(topping: string): this;
+  withExtraCheese(): this;
+  setDeliveryNotes(notes: string): this;
+  build(): Pizza;
 }
 
-// Concrete builder
-class WoodenHouseBuilder implements HouseBuilder {
-  private house: House = new House();
+// ── Concrete Builder ───────────────────────────────────────────────────────
+class CustomPizzaBuilder implements PizzaBuilder {
+  private pizza = new Pizza();
 
-  buildWalls(): void {
-    this.house.walls = "wooden walls";
+  setSize(size: string): this {
+    this.pizza.size = size;
+    return this;
   }
-  buildRoof(): void {
-    this.house.roof = "wooden roof";
+  setCrust(crust: string): this {
+    this.pizza.crust = crust;
+    return this;
   }
-  buildDoor(): void {
-    this.house.door = "wooden door";
+  setSauce(sauce: string): this {
+    this.pizza.sauce = sauce;
+    return this;
   }
-  getResult(): House {
-    return this.house;
+  addTopping(topping: string): this {
+    this.pizza.toppings.push(topping);
+    return this;
+  }
+  withExtraCheese(): this {
+    this.pizza.extraCheese = true;
+    return this;
+  }
+  setDeliveryNotes(notes: string): this {
+    this.pizza.deliveryNotes = notes;
+    return this;
+  }
+  build(): Pizza {
+    const result = this.pizza;
+    this.pizza = new Pizza(); // reset for reuse
+    return result;
   }
 }
 
-// Director
-class Director {
-  constructor(private builder: HouseBuilder) {}
+// ── Director (optional) ────────────────────────────────────────────────────
+class PizzaDirector {
+  constructor(private builder: PizzaBuilder) {}
 
-  construct(): House {
-    this.builder.buildWalls();
-    this.builder.buildRoof();
-    this.builder.buildDoor();
-    return this.builder.getResult();
+  makeMargherita(): Pizza {
+    return this.builder
+      .setSize("medium")
+      .setCrust("thin")
+      .setSauce("tomato")
+      .addTopping("mozzarella")
+      .addTopping("basil")
+      .build();
+  }
+
+  makeVeggie(): Pizza {
+    return this.builder
+      .setSize("large")
+      .setCrust("thick")
+      .setSauce("pesto")
+      .addTopping("bell pepper")
+      .addTopping("mushrooms")
+      .addTopping("olives")
+      .withExtraCheese()
+      .build();
   }
 }
 
-// Demo
-export function runDemo() {
-  const builder = new WoodenHouseBuilder();
-  const director = new Director(builder);
-  const house = director.construct();
-  house.describe();
+// ── Demo ───────────────────────────────────────────────────────────────────
+export function runBuilder(): void {
+  console.log("\n=== Builder ===");
+  console.log("Problem: construct complex objects step-by-step with a readable fluent API.\n");
+
+  const builder = new CustomPizzaBuilder();
+  const director = new PizzaDirector(builder);
+
+  console.log("  — Standard Margherita (via Director):");
+  console.log(director.makeMargherita().toString());
+
+  console.log("\n  — Custom pizza (direct fluent API):");
+  const custom = builder
+    .setSize("XL")
+    .setCrust("stuffed")
+    .setSauce("bbq")
+    .addTopping("chicken")
+    .addTopping("red onion")
+    .withExtraCheese()
+    .setDeliveryNotes("Ring bell twice")
+    .build();
+  console.log(custom.toString());
+
+  console.log("\n✅ Each pizza is built with only the properties it needs — no null/undefined soup.");
 }
+
+runBuilder();
