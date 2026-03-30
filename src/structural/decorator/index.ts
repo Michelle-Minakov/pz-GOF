@@ -1,54 +1,9 @@
-/**
- * DECORATOR — Structural Pattern
- *
- * Problem: Add responsibilities to objects dynamically without
- * modifying their class. An alternative to subclassing for extending
- * functionality, allowing combinations at runtime.
- *
- * Anti-example: PlainCoffee, CoffeeWithMilk, CoffeeWithSugar,
- * CoffeeWithMilkAndSugar, CoffeeWithMilkAndSugarAndVanilla …
- * — combinatorial explosion of subclasses.
- */
-
-// ── Component interface ────────────────────────────────────────────────────
-interface Coffee {
-  getDescription(): string;
-  getCost(): number;
-}
-
-// ── Concrete Component ─────────────────────────────────────────────────────
-class SimpleCoffee implements Coffee {
-  getDescription(): string { return "Black coffee"; }
-  getCost(): number { return 20; }
-}
-
-// ── Base Decorator ─────────────────────────────────────────────────────────
-abstract class CoffeeDecorator implements Coffee {
-  constructor(protected wrapped: Coffee) {}
-  getDescription(): string { return this.wrapped.getDescription(); }
-  getCost(): number { return this.wrapped.getCost(); }
-}
-
-// ── Concrete Decorators ────────────────────────────────────────────────────
-class MilkDecorator extends CoffeeDecorator {
-  getDescription(): string { return `${this.wrapped.getDescription()}, milk`; }
-  getCost(): number { return this.wrapped.getCost() + 5; }
-}
-
-class SugarDecorator extends CoffeeDecorator {
-  getDescription(): string { return `${this.wrapped.getDescription()}, sugar`; }
-  getCost(): number { return this.wrapped.getCost() + 2; }
-}
-
-class VanillaDecorator extends CoffeeDecorator {
-  getDescription(): string { return `${this.wrapped.getDescription()}, vanilla syrup`; }
-  getCost(): number { return this.wrapped.getCost() + 10; }
-}
-
-class WhipDecorator extends CoffeeDecorator {
-  getDescription(): string { return `${this.wrapped.getDescription()}, whipped cream`; }
-  getCost(): number { return this.wrapped.getCost() + 8; }
-}
+import { Coffee } from "./coffee";
+import { SimpleCoffee } from "./simple-coffee";
+import { MilkDecorator } from "./milk-decorator";
+import { SugarDecorator } from "./sugar-decorator";
+import { VanillaDecorator } from "./vanilla-decorator";
+import { WhipDecorator } from "./whip-decorator";
 
 function printOrder(coffee: Coffee): void {
   console.log(`  ☕ ${coffee.getDescription()}`);
