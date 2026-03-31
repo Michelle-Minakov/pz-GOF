@@ -4,11 +4,9 @@
   "description": "GoF Design Patterns in TypeScript",
   "scripts": {
     "run-all": "ts-node examples/run-all.ts",
-    "factory-method": "ts-node src/creational/factory-method/index.ts",
     "builder": "ts-node src/creational/builder/index.ts",
     "singleton": "ts-node src/creational/singleton/index.ts",
-    "adapter": "ts-node src/structural/adapter/index.ts",
-    "facade": "ts-node src/structural/facade/index.ts",
+      "facade": "ts-node src/structural/facade/index.ts",
     "decorator": "ts-node src/structural/decorator/index.ts",
     "strategy": "ts-node src/behavioral/strategy/index.ts",
     "observer": "ts-node src/behavioral/observer/index.ts"

@@ -4,6 +4,7 @@ import { MilkDecorator } from "./milk-decorator";
 import { SugarDecorator } from "./sugar-decorator";
 import { VanillaDecorator } from "./vanilla-decorator";
 import { WhipDecorator } from "./whip-decorator";
+import { DopioDecorator } from "./dopio";
 
 function printOrder(coffee: Coffee): void {
   console.log(`  ☕ ${coffee.getDescription()}`);
@@ -26,6 +27,12 @@ export function runDecorator(): void {
   order = new WhipDecorator(new VanillaDecorator(new MilkDecorator(new SimpleCoffee())));
   console.log("\n  Order 3 — vanilla latte with whip:");
   printOrder(order);
+
+  order = new DopioDecorator(new MilkDecorator(new SugarDecorator(new SimpleCoffee())));
+  console.log("\n  Order 4 — dopio:");
+  printOrder(order);
+  
+  
 
   console.log("\n✅ Any combination = just nesting decorators. Zero new classes needed.");
 }

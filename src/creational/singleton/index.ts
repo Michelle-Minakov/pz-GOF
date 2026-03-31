@@ -13,6 +13,8 @@ function moduleB(): void {
   logger.log("ERROR", "Module B: connection failed, retrying...");
 }
 
+
+
 // ── Demo ───────────────────────────────────────────────────────────────────
 export function runSingleton(): void {
   console.log("\n=== Singleton ===");
@@ -20,6 +22,7 @@ export function runSingleton(): void {
 
   moduleA();
   moduleB();
+  
 
   const logger = AppLogger.getInstance();
   console.log(`\n  Total log entries: ${logger.getCallCount()}`);

@@ -19,9 +19,11 @@ export function runBuilder(): void {
     .setSauce("bbq")
     .addTopping("chicken")
     .addTopping("red onion")
+    .addTopping("mushrooms")
+    .addTopping("artichoke")
     .withExtraCheese()
     .setDeliveryNotes("Ring bell twice")
-    .build();
+      .build();
   console.log(custom.toString());
 
   console.log("\n✅ Each pizza is built with only the properties it needs — no null/undefined soup.");

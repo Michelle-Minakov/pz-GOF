@@ -1,17 +1,17 @@
-import { MediaPlayerFacade } from "./media-player-facade";
+import { HomeTheaterFacade } from "./home-theater-facade";
 
-// ── Demo ───────────────────────────────────────────────────────────────────
+// ── Client code uses only facade, not subsystem details ──────────────────
 export function runFacade(): void {
   console.log("\n=== Facade ===");
-  console.log("Problem: playing a video requires 5+ subsystems. Facade hides that complexity.\n");
+  console.log("Problem: hide complex subsystem behind simple interface.\n");
 
-  const player = new MediaPlayerFacade();
+  const homeTheater = new HomeTheaterFacade();
 
-  player.play("movie.mkv", { subtitleLang: "uk", bufferMb: 128 });
-  console.log();
-  player.stop();
+  homeTheater.watchMovie("Inception");
+  console.log("\n  🎬 Movie is running...\n");
+  homeTheater.endMovie();
 
-  console.log("\n✅ Client code is 2 lines. Subsystem can be swapped without touching clients.");
+  console.log("\n✅ Client code has a simple API, internals are decoupled and hidden.");
 }
 
 runFacade();

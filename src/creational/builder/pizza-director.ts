@@ -10,6 +10,7 @@ export class PizzaDirector {
       .setCrust("thin")
       .setSauce("tomato")
       .addTopping("mozzarella")
+      .addTopping("artichoke")
       .addTopping("basil")
       .build();
   }

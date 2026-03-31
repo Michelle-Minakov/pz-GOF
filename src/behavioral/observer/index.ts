@@ -29,10 +29,11 @@ export function runObserver(): void {
 
   console.log("\n  — Unsubscribing audit log...");
   market.unsubscribe("tick", audit);
-  console.log("  — Unsubscribing portfolio observer...");
+ console.log("  — Unsubscribing portfolio observer...");
   market.unsubscribe("tick", portfolio);
   market.updatePrice("TSLA", 250.00);
-
+market.unsubscribe("tick", news);
+market.subscribe("tick", audit);
   console.log("\n✅ Adding/removing observers never changes StockMarket. Loose coupling.");
 }
 
